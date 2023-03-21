@@ -4,14 +4,15 @@ pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
-
 screen = pygame.display.set_mode( SIZE )
+background = pygame.image.load("eclipse.jpg")
+
 pygame.display.set_caption("Space Invaders")
 
 icon = pygame.image.load("space-invaders (1).png")
 pygame.display.set_icon( icon )
 
-enemy_img = pygame.image.load("ufo.png")
+enemy_img = pygame.image.load("ufo.png") 
 enemy_x = random.randint(0,100)
 enemy_y = random.randint(50, 150)
 enemy_x_change = 0.2
@@ -59,13 +60,13 @@ while running:
     elif enemy_x <= 0:
         enemy_x_change = 0.2
         enemy_y += enemy_y_change
-    if enemy_y == 450:
-        running = False
+ 
 
    
 
     RGB = (20,80,120)
     screen.fill( RGB )
+    screen.blit(background, (0,0))
     player(player_x, player_y)
     enemy(enemy_x, enemy_y)
     enemy(enemy_x, enemy_y)
