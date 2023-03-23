@@ -28,6 +28,7 @@ player_ing =  pygame.image.load("nave-espacial.png")
 player_x = 360
 player_y = 500
 player_x_change = 0
+
 def player(x, y):
     screen.blit(player_ing, (x, y))    
 def enemy(x, y):
@@ -50,7 +51,9 @@ while running:
             if event.key == pygame.K_RIGHT:   
                 player_x_change = 1
             
-            if event.key == pygame.K_w:
+            if event.key == pygame.K_SPACE:
+             if bullet_state == "ready":
+                bullet_x = player_x
                 fire(player_x, bullet_y)
 
         if event.type == pygame.KEYUP:
@@ -73,8 +76,12 @@ while running:
         enemy_x_change = 0.2
         enemy_y += enemy_y_change
 
+    if bullet_y <= 0:
+        bullet_y = 500
+        bullet_state = "ready"
+
     if bullet_state == "fire":
-        fire(player_x, bullet_y)
+        fire(bullet_x, bullet_y)
         bullet_y -= bullet_y_change
  
 
