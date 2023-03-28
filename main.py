@@ -52,6 +52,9 @@ def hitbox(enemy_x, enemy_y, bullet_x, bullet_y):
 
 running = True
 while running: 
+    RGB = (20,80,120)
+    screen.fill( RGB )
+    screen.blit(background, (0,0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -105,11 +108,7 @@ while running:
         enemy_x_change = 0.2
         enemy_y_change = 20
     
-   
-
-    RGB = (20,80,120)
-    screen.fill( RGB )
-    screen.blit(background, (0,0))
+ 
     player(player_x, player_y)
     enemy(enemy_x, enemy_y)
     enemy(enemy_x, enemy_y)
