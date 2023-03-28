@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -18,16 +19,20 @@ enemy_y = random.randint(50, 150)
 enemy_x_change = 0.2
 enemy_y_change = 20
 
+player_ing =  pygame.image.load("nave-espacial.png")
+player_x = 360
+player_y = 500
+player_x_change = 0
+
+
 bullet_img = pygame.image.load("bullet.png")
 bullet_x = 0
 bullet_y = 500
 bullet_state = "ready"
 bullet_y_change = 2
 
-player_ing =  pygame.image.load("nave-espacial.png")
-player_x = 360
-player_y = 500
-player_x_change = 0
+score = 0
+
 
 def player(x, y):
     screen.blit(player_ing, (x, y))    
@@ -37,6 +42,13 @@ def fire(x,y):
     global bullet_state
     bullet_state = "fire"
     screen.blit(bullet_img,(x + 20, y + 10))
+def hitbox(enemy_x, enemy_y, bullet_x, bullet_y):
+    distance = math.sqrt((enemy_x - bullet_x)**2 + (enemy_y - bullet_y)**2)
+    if distance < 27:
+        return True
+    else:
+        return False
+
 
 running = True
 while running: 
@@ -52,9 +64,9 @@ while running:
                 player_x_change = 1
             
             if event.key == pygame.K_SPACE:
-             if bullet_state == "ready":
-                bullet_x = player_x
-                fire(player_x, bullet_y)
+                if bullet_state == "ready":
+                    bullet_x = player_x
+                    fire(player_x, bullet_y)
 
         if event.type == pygame.KEYUP:
 
@@ -83,8 +95,16 @@ while running:
     if bullet_state == "fire":
         fire(bullet_x, bullet_y)
         bullet_y -= bullet_y_change
- 
-
+    
+    collition = hitbox(enemy_x, enemy_y, bullet_x, bullet_y)
+    if collition: 
+        bullet_state == "ready"
+        score += 1
+        enemy_x = random.randint(0,100)
+        enemy_y = random.randint(50, 150)
+        enemy_x_change = 0.2
+        enemy_y_change = 20
+    
    
 
     RGB = (20,80,120)
