@@ -13,17 +13,24 @@ pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load("space-invaders (1).png")
 pygame.display.set_icon( icon )
 
-enemy_img = pygame.image.load("ufo.png") 
-enemy_x = random.randint(0,100)
-enemy_y = random.randint(50, 150)
-enemy_x_change = 0.2
-enemy_y_change = 20
 
 player_ing =  pygame.image.load("nave-espacial.png")
 player_x = 360
 player_y = 500
 player_x_change = 0
-
+ 
+enemy_img = []
+enemy_x = []
+enemy_y = []
+enemy_x_change = []
+enemy_y_change = []
+number_enemies = 10
+for item in range(number_enemies):
+ enemy_img.append( pygame.image.load("ufo.png"))  
+ enemy_x.append(random.randint(0,100))
+ enemy_y.append (random.randint(50, 150))
+ enemy_x_change.append( 1)
+ enemy_y_change.append (60)
 
 bullet_img = pygame.image.load("bullet.png")
 bullet_x = 0
@@ -36,8 +43,9 @@ score = 0
 
 def player(x, y):
     screen.blit(player_ing, (x, y))    
-def enemy(x, y):
-        screen.blit(enemy_img, (x, y)) 
+
+def enemy(x, y, item):
+        screen.blit(enemy_img[item], (x, y)) 
 def fire(x,y):
     global bullet_state
     bullet_state = "fire"
@@ -82,14 +90,25 @@ while running:
         player_x = 0
     elif player_x >= 736:
         player_x = 736
-    enemy_x += enemy_x_change
-    if enemy_x >= 736:
-        enemy_x -= enemy_x_change
-        enemy_x_change = -0.2
-        enemy_y += enemy_y_change
-    elif enemy_x <= 0:
-        enemy_x_change = 0.2
-        enemy_y += enemy_y_change
+    
+    for item in range(number_enemies):
+        enemy_x[item] += enemy_x_change[item]
+        if enemy_x[item] >= 736:
+            enemy_x[item] -= enemy_x_change[item]
+            enemy_x_change[item] = -1
+            enemy_y[item] += enemy_y_change[item]
+        elif enemy_x[item] <= 0:
+            enemy_x_change[item] = 1
+            enemy_y[item] += enemy_y_change[item]
+        
+        collition = hitbox(enemy_x[item], enemy_y[item], bullet_x, bullet_y)
+        
+        if collition: 
+            bullet_state == "ready"
+            score += 1
+            enemy_x[item] = random.randint(0,100)
+            enemy_y[item] = random.randint(50, 150)
+        enemy(enemy_x[item], enemy_y[item], item)
 
     if bullet_y <= 0:
         bullet_y = 500
@@ -99,18 +118,10 @@ while running:
         fire(bullet_x, bullet_y)
         bullet_y -= bullet_y_change
     
-    collition = hitbox(enemy_x, enemy_y, bullet_x, bullet_y)
-    if collition: 
-        bullet_state == "ready"
-        score += 1
-        enemy_x = random.randint(0,100)
-        enemy_y = random.randint(50, 150)
-        enemy_x_change = 0.2
-        enemy_y_change = 20
+
     
  
     player(player_x, player_y)
-    enemy(enemy_x, enemy_y)
-    enemy(enemy_x, enemy_y)
+    
     
     pygame.display.update()
