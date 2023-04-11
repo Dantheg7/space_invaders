@@ -1,12 +1,16 @@
 import pygame
 import random
 import math
+from pygame import mixer
 pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 screen = pygame.display.set_mode( SIZE )
 background = pygame.image.load("eclipse.jpg")
+
+mixer.music.load("background.wav")
+mixer.music.play(-1)
 
 pygame.display.set_caption("Space Invaders")
 
@@ -84,6 +88,7 @@ while running:
             
             if event.key == pygame.K_SPACE:
                 if bullet_state == "ready":
+                    bullet_sound = mixer.Sound("shoot.wav")
                     bullet_x = player_x
                     fire(player_x, bullet_y)
 
@@ -112,6 +117,8 @@ while running:
         collition = hitbox(enemy_x[item], enemy_y[item], bullet_x, bullet_y)
         
         if collition: 
+            explotion_sound = mixer.Sound("hit.wav")
+            explotion_sound.play()
             bullet_state == "ready"
             score += 1
             enemy_x[item] = random.randint(0,100)
