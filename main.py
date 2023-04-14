@@ -9,7 +9,8 @@ SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 screen = pygame.display.set_mode( SIZE )
 background = pygame.image.load("eclipse.jpg")
 
-mixer.music.load("background.wav")
+
+mixer.music.load("Background.wav")
 mixer.music.play(-1)
 
 pygame.display.set_caption("Space Invaders")
